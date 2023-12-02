@@ -1,0 +1,99 @@
+<html>
+<style>
+	table {
+		border-collapse: collapse;
+	}
+
+	table,
+	th,
+	td {
+		border: 1px solid black;
+	}
+
+	td {
+		height: 30px;
+		width: 60px;
+	}
+</style>
+<font size="8" color="green">Final test lab</font><br><br>
+Number of rows: <input type="text" id="t1" /><br><br>
+Number of cols: <input type="text" id="t2" /><br><br>
+
+<button id="b1" onclick="generateTable()">Generate Table</button><br><br>
+
+<button id="b2" onclick="addColumn()">Add Column</button>
+
+<button id="b3" onclick="addRow()">Add Row</button>
+
+<div id="tableParentDiv"></div>
+
+<script language="javascript">
+	let rowCount = 0;
+	let colCount = 0;
+
+	const rowInput = document.getElementById("t1");
+	const colInput = document.getElementById("t2");
+	const generateTableButton = document.getElementById("b1");
+	const addColumnButton = document.getElementById("b2");
+	const addRowButton = document.getElementById("b3");
+	const tableParentDiv = document.getElementById("tableParentDiv");
+
+
+	function generateRow(rows, cols) {
+		let trHTMLContent = "";
+		for (let index = 0; index < rows; index++) {
+			let tdHtmlContent = "";
+			for (let index = 0; index < cols; index++) {
+				tdHtmlContent += `<td></td>`
+			}
+			trHTMLContent += `<tr>${tdHtmlContent}</tr>`;
+		}
+		return trHTMLContent;
+	}
+
+	function generateTable() {
+		if (!rowInput.value || !colInput.value) alert("Please provide no of rows and cols for table!!!");
+		else {
+			let body = document.querySelector("body");
+			body.innerHTML = "";
+			body.append(addRowButton);
+			body.append(addColumnButton);
+			const table = document.createElement("table");
+			table.id = "dynamicTable";
+			table.innerHTML = `
+					${generateRow(rowInput.value, colInput.value)}
+			`;
+			body.append(table);
+			rowCount = rowInput.value;
+			colCount = colInput.value;
+		}
+	}
+
+	function addRow() {
+		if (rowCount == 0) alert("Please insert table first");
+		else {
+			const table = document.getElementById("dynamicTable");
+			const row = table.insertRow(0);
+			for (let index = 0; index < colCount; index++) {
+				row.insertCell(index);
+			}
+			rowCount++;
+		}
+	}
+
+	function addColumn() {
+		if (rowCount == 0) alert("Please insert table first");
+		else {
+			const table = document.getElementById("dynamicTable");
+			let rows = table.children[0].rows;
+			for (let index = 0; index < rows.length; index++) {
+				const element = rows[index];
+				element.insertCell(0);
+			}
+			colCount++;
+		}
+	}
+
+</script>
+
+</html>
